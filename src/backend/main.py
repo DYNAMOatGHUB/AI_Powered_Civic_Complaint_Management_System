@@ -14,6 +14,7 @@ except Exception as e:
 app = FastAPI(title="Civic Pulse API (PostgreSQL)")
 
 origins = [
+    "https://civic-pulse-frontend-gamma.vercel.app",
     "http://localhost:5173",
     "http://localhost:3000"
 ]
