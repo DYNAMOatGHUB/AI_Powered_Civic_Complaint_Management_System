@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-// Live Production Render Backend API URL
-const LIVE_BACKEND_URL = 'http://localhost:8000';
+// Backend API URL
+const DEFAULT_BACKEND_URL = 'http://localhost:8000';
 
-const API_BASE = import.meta.env.VITE_BACKEND_URL || LIVE_BACKEND_URL;
+const API_BASE = import.meta.env.VITE_BACKEND_URL || DEFAULT_BACKEND_URL;
 
 const client = axios.create({
   baseURL: API_BASE,

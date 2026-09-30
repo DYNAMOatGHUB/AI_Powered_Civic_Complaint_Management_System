@@ -1,70 +1,30 @@
-# Civic Pulse: Complete Production Deployment & Log Guide
+# Deployment Guide
 
-This guide provides step-by-step instructions to deploy the entire Civic Pulse stack: **Database (PostgreSQL)**, **Backend API (FastAPI)**, and **Frontend (React)**, including **how to view real-time logs**.
+This guide covers how to deploy the AI Powered Civic Complaint Management System to a new hosting platform from scratch.
 
----
+## Backend Deployment (e.g., Render, Railway, DigitalOcean App Platform)
 
-## 🗄️ Step 1: Deploy PostgreSQL Database (Neon)
-
-1. Go to [neon.tech](https://neon.tech/) and sign up for a free account.
-2. Click **"New Project"** and name it `civic-pulse`.
-3. Copy your **PostgreSQL Connection String**:
-   ```text
-   postgresql://neondb_owner:your_password@ep-cool-name.us-east-2.aws.neon.tech/neondb?sslmode=require
-   ```
-
-### 📊 How to View Database Logs:
-- Go to **Neon Dashboard** → Select Project → Click **"Monitoring"** or **"Operations"** to view real-time query logs and connection health.
-
----
-
-## 🐍 Step 2: Deploy Backend API (Render)
-
-1. Push your repository to **GitHub**.
-2. Sign in to [render.com](https://render.com/).
-3. Click **"New +"** → **"Web Service"** → Connect your GitHub repo.
-4. Set the configuration options:
-   - **Name**: `civic-pulse-backend`
-   - **Root Directory**: `src/backend`
-   - **Environment**: `Python 3`
+1. **Connect your GitHub repository** to your chosen hosting provider.
+2. **Environment Variables**: Set the following environment variables in your hosting provider's dashboard:
+   - `DATABASE_URL`: Your PostgreSQL database connection string (e.g., from Neon or Supabase).
+   - `GEMINI_API_KEY`: Your Google Gemini API key.
+   - `CLOUDINARY_URL`: Your Cloudinary API connection string.
+3. **Build and Run Commands**:
+   - **Root Directory**: Set the root directory to `src/backend`.
    - **Build Command**: `pip install -r requirements.txt`
-   - **Start Command**: `uvicorn main:app --host 0.0.0.0 --port $PORT --ws none`
+   - **Start Command**: `uvicorn main:app --host 0.0.0.0 --port $PORT`
+4. **Deploy**: Trigger a manual deploy. Once deployed, note down the provided backend URL (e.g., `https://your-backend-api.com`).
 
-5. Add your Environment Variables under **Environment**:
-   - `DATABASE_URL`: *(Your Neon Connection String)*
-   - `JWT_SECRET_KEY`: `civic_pulse_secret_2026`
-   - `GEMINI_API_KEY`: *(Your Google Gemini Key)*
-   - `CLOUDINARY_CLOUD_NAME`: *(Your Cloudinary Cloud Name)*
-   - `CLOUDINARY_API_KEY`: *(Your Cloudinary API Key)*
-   - `CLOUDINARY_API_SECRET`: *(Your Cloudinary API Secret)*
+## Frontend Deployment (e.g., Vercel, Netlify, Cloudflare Pages)
 
-6. Click **"Create Web Service"**. Render will output your live API URL (e.g. `https://civic-pulse-backend.onrender.com`).
-
-### 📊 How to View Live Backend Logs:
-- Go to your Render Dashboard → Click your Web Service → Select **"Logs"** in the left sidebar to view **live streaming terminal logs**.
-
----
-
-## ⚛️ Step 3: Deploy Frontend (Vercel)
-
-1. Sign in to [vercel.com](https://vercel.com/).
-2. Click **"Add New..."** → **"Project"** → Import your GitHub repository.
-3. Set the project settings:
-   - **Framework Preset**: `Vite`
-   - **Root Directory**: Edit and select `src/frontend`
-4. Add Environment Variable:
-   - `VITE_BACKEND_URL`: `https://civic-pulse-backend.onrender.com`
-5. Click **"Deploy"**.
-
-### 📊 How to View Live Frontend Logs:
-- Go to Vercel Dashboard → Select Project → Click **"Deployments"** → Select Active Deployment → View **"Building Logs"** and **"Functions / Runtime Logs"**.
-
----
-
-## 📋 Quick Log Viewing Summary
-
-| Component | Platform | How to View Live Logs |
-| :--- | :--- | :--- |
-| **Backend API** | [Render](https://dashboard.render.com/) | Render Dashboard → Service → **"Logs"** tab |
-| **Frontend UI** | [Vercel](https://vercel.com/) | Vercel Dashboard → Project → **"Deployments"** → **"Runtime Logs"** |
-| **Database** | [Neon](https://console.neon.tech/) | Neon Dashboard → Project → **"Monitoring & Operations"** |
+1. **Connect your GitHub repository** to your chosen hosting provider.
+2. **Environment Variables**: Set the following environment variable in your hosting provider's dashboard:
+   - `VITE_BACKEND_URL`: Set this to your newly deployed backend URL (e.g., `https://your-backend-api.com`).
+3. **Build and Output**:
+   - **Root Directory**: Set the root directory to `src/frontend`.
+   - **Framework Preset**: Vite (or React).
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
+4. **CORS Configuration**:
+   - After deploying your frontend, make sure to add your frontend URL to the `origins` list in `src/backend/main.py` if strict CORS is needed (currently, a wildcard fallback is in place for development).
+5. **Deploy**: Trigger the deployment. Your app should now be live!
