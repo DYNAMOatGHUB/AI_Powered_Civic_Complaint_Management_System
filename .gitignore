@@ -18,4 +18,4 @@ venv/
 
 # Except these presentation files
 !AI_AGENTS_AND_CORE_ARCHITECTURE.md
-!src/README.md
+!README.md
