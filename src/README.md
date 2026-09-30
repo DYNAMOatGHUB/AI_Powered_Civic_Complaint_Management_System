@@ -1,91 +1,60 @@
-# Civic Pulse: Coimbatore Complaint Management MVP
+# AI-Powered Civic Complaint Management System (Civic Pulse)
 
-**Civic Pulse** is a production-ready, map-first civic complaint management pilot built for Coimbatore City Municipal Corporation. It empowers citizens to report local infrastructure issues, upvote existing complaints to prevent duplicate queue noise, and provides Ward Officers with a ranked, actionable dashboard with a strict 14-day SLA escalation system.
+## 🚨 The Problem: Urban Infrastructure Management
+In rapidly growing municipalities, maintaining civic infrastructure (roads, water supply, sanitation, streetlights) is a massive logistical challenge. 
 
----
+### The Cause
+Citizens report issues through a fragmented mix of WhatsApp groups, phone calls, and outdated grievance portals. Ward officers—such as Sanitary Inspectors or Assistant Engineers—receive 30 to 50+ unstructured complaints daily. There is no automated triage system to categorize these complaints or determine their urgency.
 
-## ✨ Features
-
-- **Map-First Citizen Portal**: Interactive Leaflet map with OpenStreetMap tiles displaying ward boundaries and live complaint pins.
-- **Two-Layer Duplicate Prevention**:
-  1. *Step 1 Location/Category Pre-Check*: Urges citizens to upvote existing issues.
-  2. *Step 2 Gemini AI Semantic Duplicate Check*: Uses Google Gemini 1.5 Flash to detect duplicate meaning regardless of wording differences.
-- **Live Camera Photo Capture**: Strict live camera capture (`navigator.mediaDevices`) under 2 MB with Gemini Vision photo-category validation.
-- **Officer Ranked Action Dashboard**: Sorts complaints by community upvotes, time open, and SLA escalation status.
-- **Grievance Escalation System**: Planned inspection/start/fix date tracking with an automatic 14-day hard SLA limit that triggers officer performance flags/black marks upon expiry.
-- **Real-Time WebSockets**: Live status, vote count, and new complaint broadcasts powered by FastAPI WebSockets.
+### The Effect
+- **Dangerous Delays:** Genuine emergencies (e.g., a burst main water pipe flooding a street) get buried under routine requests (e.g., a faded road marking).
+- **Redundancy & Duplication:** The same pothole might be reported by 15 different residents, creating 15 separate tickets that the officer must manually review and close.
+- **Resource Inefficiency:** Officers waste hours every morning manually sorting through the backlog instead of deploying field teams. Citizens lose trust due to slow response times.
 
 ---
 
-## 🛠️ Tech Stack
+## 💡 Our Solution
+**Civic Pulse** is an end-to-end, AI-driven civic complaint management platform designed to eliminate the noise. It empowers citizens with a transparent reporting system and equips municipal officers with an intelligent, self-organizing dashboard. 
 
-- **Frontend**: React (Vite), Tailwind CSS, Leaflet.js, Lucide Icons, Axios, WebSockets.
-- **Backend**: FastAPI (Python), SQLAlchemy ORM, PostgreSQL (Neon) / SQLite fallback, Uvicorn.
-- **AI Integrations**: Google Gemini 1.5 Flash (Semantic Duplicate Detection), Gemini Vision (Live Photo Validation).
-- **Storage**: Cloudinary API (Camera Image Uploads).
-- **Authentication**: JWT + Username / Password session management.
+Instead of an endless chronological list of tickets, our system actively **reads, sees, categorizes, and ranks** the complaints based on real-world severity and community impact.
 
 ---
 
-## 🔑 Environment Variables & API Keys
+## ⚙️ How It Works: Architecture & Workflow
 
-Place environment variables in `src/backend/.env`:
+The system bridges the gap between citizens and municipal authorities through a 4-step intelligent workflow:
 
-| Environment Variable | Description / Purpose | Key Placement Location |
-| :--- | :--- | :--- |
-| `DATABASE_URL` | PostgreSQL (Neon) or SQLite connection string | `src/backend/.env` |
-| `JWT_SECRET_KEY` | Secret key used to sign JWT authentication tokens | `src/backend/.env` |
-| `GEMINI_API_KEY` | Google Gemini API Key for semantic duplicate comparison & vision validation | `src/backend/.env` |
-| `CLOUDINARY_CLOUD_NAME` | Cloudinary Cloud Name for storing complaint photos | `src/backend/.env` |
-| `CLOUDINARY_API_KEY` | Cloudinary API Key | `src/backend/.env` |
-| `CLOUDINARY_API_SECRET` | Cloudinary API Secret | `src/backend/.env` |
-| `FRONTEND_BASE_URL` | Frontend URL (`http://localhost:5173`) | `src/backend/.env` |
-| `BACKEND_BASE_URL` | Backend API URL (`http://localhost:8000`) | `src/backend/.env` |
+### 1. Transparent Citizen Reporting
+Citizens access a responsive web application featuring a live, interactive map. Instead of filling out long forms, they simply drop a pin at the exact location of the issue. 
+If a neighbor has already reported the issue (e.g., a broken streetlight), the citizen sees it on the map and can **Upvote** the existing pin instead of filing a duplicate.
 
----
+### 2. AI Multimodal Triage (Powered by Gemini)
+When a new complaint is filed, it is immediately passed to our AI Understanding Agent. The AI:
+- **Analyzes the text description** to understand the context.
+- **Processes the uploaded photo** to validate the issue (e.g., ensuring a picture of a pothole actually shows a pothole, filtering out spam or irrelevant images).
+- **Determines the Category & Department:** It automatically routes the issue (e.g., "Water Leak" goes to the *Water Supply* department, "Garbage" goes to *Sanitation*).
 
-## 🚀 Local Setup & Seed Data
+### 3. Dynamic Priority Scoring Intelligence
+The core innovation is our AI Priority Agent, which ensures critical issues are addressed first. The priority is not static; it dynamically evolves based on a custom algorithm:
+**`Priority = Base AI Severity + (Community Upvotes × Weight) + Time Elapsed Penalty`**
+- *Base Severity:* AI recognizes a "burst pipe" is inherently more dangerous than "overgrown weeds".
+- *Community Impact:* As more citizens upvote a pin, its priority dynamically rises.
+- *Time Factor:* Older, unresolved complaints slowly increase in priority to prevent them from being forgotten.
 
-### 1. Backend Setup
-```bash
-cd src/backend
-
-# Create & activate virtual environment (optional)
-python -m venv venv
-.\venv\Scripts\Activate.ps1
-
-# Install Python packages
-pip install -r requirements.txt
-
-# Start backend server (seeds 3 Coimbatore wards automatically on launch)
-uvicorn main:app --reload --port 8000
-```
-
-### 2. Frontend Setup
-```bash
-cd src/frontend
-
-# Install dependencies
-npm install
-
-# Start Vite dev server
-npm run dev
-```
-
-Visit `http://localhost:5173` to access the application!
+### 4. Smart Officer Dashboard
+When the Ward Officer logs in, they aren't greeted by an inbox. They see an actionable, ranked dashboard. The most critical, highly-voted emergencies sit at the absolute top. The officer can instantly review the AI’s justification, check the photo evidence, and transition the issue (`Open → In Progress → Resolved`), triggering real-time notifications to the citizens.
 
 ---
 
-## 🧪 Testing
+## ✨ Features & Capabilities
 
-- **Backend API Docs**: Visit `http://localhost:8000/docs` for interactive Swagger testing of authentication, wards, complaints, and admin actions.
-- **Test User Accounts**:
-  - Citizen: `username: lakshmi`, `password: lakshmi123`
-  - Officer: `username: officer1`, `password: officer123`
+- 🗺️ **Live Geospatial Mapping:** Built on Leaflet/OpenStreetMap, allowing precise geolocation of civic issues.
+- 🧠 **LLM-Powered Validation:** Uses Google Gemini to detect spam and validate the severity of complaints from raw text and images.
+- 🗳️ **Community Deduplication:** An upvoting mechanism that transforms 20 identical complaints into 1 high-priority mega-complaint.
+- 🏢 **Intelligent Routing:** Automatically assigns complaints to specific government departments without human intervention.
+- 📊 **Real-time Analytics:** Ward officers get immediate oversight on resolution times and high-density problem zones.
+- 📱 **Progressive Web App (PWA) Ready:** A mobile-first citizen interface designed to work seamlessly on any smartphone browser.
 
 ---
 
-## 📌 Known Limitations & Future Roadmap
-
-- **Single Ward Pilot**: Seeded with 3 Coimbatore wards (RS Puram, Gandhipuram, Peelamedu); expanding to all 100 wards in future releases.
-- **GIS Geometry**: Currently uses approximate bounding GeoJSON polygons for the pilot wards; will integrate full QGIS shapefiles upon municipal deployment.
+**Civic Pulse** isn't just a ticketing system—it's an intelligent middleman that respects the citizen's time and supercharges the municipal officer's efficiency.

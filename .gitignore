@@ -11,3 +11,11 @@ __pycache__/
 .DS_Store
 .venv/
 venv/
+
+# Ignore all markdown files
+*.md
+**/*.md
+
+# Except these presentation files
+!AI_AGENTS_AND_CORE_ARCHITECTURE.md
+!src/README.md
