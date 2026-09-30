@@ -10,7 +10,7 @@ it: the earlier somebody notices you are stuck, the more of the weekend is left
 to fix it.
 
 The reasoning behind each one, and what to cut if you are behind, is at
-https://t4g.gdgcbe.com/milestones
+#
 
 ## Before Saturday
 
@@ -41,4 +41,4 @@ https://t4g.gdgcbe.com/milestones
 
 Coding stops at **12:00 noon on Sunday 9 August**. That deadline does not move.
 
-Tech for Good 2026 · GDG Coimbatore · Dr. G. R. Damodaran College of Science
+AI Powered Civic Complaint Management System
