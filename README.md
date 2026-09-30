@@ -1,5 +1,7 @@
 # AI-Powered Civic Complaint Management System (Civic Pulse)
 
+🚀 **Live Demo:** [https://civic-pulse-frontend-gamma.vercel.app/](https://civic-pulse-frontend-gamma.vercel.app/)
+
 ## 🚨 The Problem: Urban Infrastructure Management
 In rapidly growing municipalities, maintaining civic infrastructure (roads, water supply, sanitation, streetlights) is a massive logistical challenge. 
 
